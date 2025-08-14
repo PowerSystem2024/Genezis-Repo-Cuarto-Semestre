@@ -1,5 +1,5 @@
-# Genezis-Repo-Tercer-Semestre
-Repositorio para subir ejercitación de las clases del Tercer Semestre de la Tecnicatura en Programación
+# Genezis-Repo-Cuarto-Semestre
+Repositorio para subir ejercitación de las clases del Cuarto y ÚLTIMO Semestre de la Tecnicatura en Programación
 
 # Grupo GENEZIS - COHORTE 2024
 
