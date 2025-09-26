@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <base href="/media/">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Verdulería José</title>
+  <link rel="icon" href="logo.png" />
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- SDK de Mercado Pago -->
+  <script src="https://sdk.mercadopago.com/js/v2"></script>
+  <script>
+    window.MP_PUBLIC_KEY = "APP_USR-36e6692a-0dc2-47ca-962c-cbc8d0c050b3";
+  </script>
+
+  <!-- Banner estado -->
+  <style>
+    .hidden { display: none !important; }
+    #statusBanner { padding:12px 16px; border-radius:8px; margin:10px 20px; font-weight:600; text-align:center; font-size:14px; }
+    #statusBanner.success { background:#d1fae5; color:#065f46; border:1px solid #a7f3d0; }
+    #statusBanner.error   { background:#fee2e2; color:#991b1b; border:1px solid #fca5a5; }
+    #statusBanner.warning { background:#fef9c3; color:#92400e; border:1px solid #fde68a; }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="brand">
+      <img src="logo.png" alt="Logo Verdulería José" class="logo" />
+      <div>
+        <h1>Verdulería José</h1>
+        <p class="muted">Frutas y verduras frescas del barrio</p>
+      </div>
+    </div>
+    <div class="cart-cta">
+      <button id="openCart" class="btn">🛒 Carrito (<span id="cartCount">0</span>)</button>
+    </div>
+  </header>
+
+  <div id="statusBanner" class="hidden"></div>
+
+  <main class="container">
+    <section class="controls">
+      <input id="q" type="search" placeholder="Buscar (ej: manzana, tomate)..." />
+      <select id="cat">
+        <option value="">Todas las categorías</option>
+        <option value="Fruta">Frutas</option>
+        <option value="Verdura">Verduras</option>
+        <option value="Otros">Otros</option>
+      </select>
+      <select id="sort">
+        <option value="name-asc">Nombre (A→Z)</option>
+        <option value="price-asc">Precio (menor)</option>
+        <option value="price-desc">Precio (mayor)</option>
+      </select>
+    </section>
+
+    <section>
+      <div id="productGrid" class="product-grid" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <!-- Carrito -->
+  <dialog id="cartDialog" class="cart-modal">
+    <div class="cart-box">
+      <header class="cart-header">
+        <h3>🛒 Tu carrito</h3>
+        <button id="closeCart" class="icon-btn" aria-label="Cerrar">✕</button>
+      </header>
+      <div id="cartItems" class="cart-items"></div>
+      <footer class="cart-footer">
+        <div class="summary">
+          <span class="muted">Total</span>
+          <strong id="cartTotal">$0,00</strong>
+        </div>
+        <div class="cart-actions" style="display:grid; gap:10px">
+          <button id="clearCart" type="button" class="btn danger">Vaciar</button>
+          <button id="checkout" type="button" class="btn">Finalizar compra</button>
+          <div id="mp-button"></div>
+        </div>
+      </footer>
+    </div>
+  </dialog>
+
+  <!-- Popup de compra exitosa -->
+  <dialog id="successDialog" class="flash-modal">
+    <div class="flash-card">
+      <div class="flash-icon">✅</div>
+      <h3>¡Compra exitosa!</h3>
+      <p>Gracias por tu compra. Tu pedido está en preparación.</p>
+      <button id="successClose" class="btn">Entendido</button>
+    </div>
+  </dialog>
+
+  <footer class="footer">
+    <small>© <span id="year"></span> Verdulería José • Hecho con HTML + CSS + JS</small>
+  </footer>
+
+  <script type="module" src="../js/index.js"></script>
+  <script type="module" src="../js/cart.js"></script>
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    (function handleMPReturnOnCheckout(){
+      const p = new URLSearchParams(location.search);
+      const status = (p.get('status') || '').toLowerCase();
+      if (!status) return;
+
+      if (status === 'approved' || status === 'success') {
+        try { localStorage.setItem("vj_cart","[]"); } catch {}
+        try { sessionStorage.setItem("vj_flash_paid_ok","1"); } catch {}
+        window.location.replace(window.location.origin + window.location.pathname + "?compra=ok");
+        return;
+      }
+      if (status === 'pending') {
+        showNotification('⏳ Tu pago está pendiente de confirmación.','warning');
+        return;
+      }
+      if (status === 'failure' || status === 'rejected') {
+        showNotification('❌ El pago fue rechazado. Puedes intentar nuevamente.','error');
+        return;
+      }
+    })();
+
+    (function showFlashOnLanding(){
+      const q = new URLSearchParams(location.search);
+      const isOk = q.get('compra') === 'ok' || sessionStorage.getItem('vj_flash_paid_ok') === '1';
+      if (!isOk) return;
+
+      try { localStorage.setItem("vj_cart","[]"); } catch {}
+      const dlg = document.getElementById("successDialog");
+      const btn = document.getElementById("successClose");
+      if (dlg && dlg.showModal) {
+        dlg.showModal();
+        btn?.addEventListener('click', ()=> dlg.close());
+        // ⏳ Autocierre a los 8s
+        setTimeout(()=>{ if (dlg.open) dlg.close(); }, 8000);
+      }
+      try { sessionStorage.removeItem('vj_flash_paid_ok'); } catch {}
+      if (q.get('compra') === 'ok') {
+        history.replaceState({}, document.title, location.pathname);
+      }
+    })();
+
+    function showNotification(message, type) {
+      const banner = document.getElementById('statusBanner');
+      if (!banner) return alert(message);
+      banner.textContent = message;
+      banner.className = type;
+      banner.classList.remove('hidden');
+      setTimeout(() => banner.classList.add('hidden'), 5000);
+    }
+  </script>
+</body>
+</html>
+
+
+
+
