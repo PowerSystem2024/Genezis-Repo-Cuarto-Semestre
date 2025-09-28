@@ -25,6 +25,7 @@ Este repositorio utiliza las herramientas de GitHub para una gestión profesiona
 
 *   **[Issues (Tareas)](https://github.com/PowerSystem2024/Genezis-Repo-Cuarto-Semestre/issues):** Aquí encontrarás la lista completa de todas las tareas planificadas para el semestre, separadas individualmente.
 *   **[Projects (Tablero Kanban)](https://github.com/PowerSystem2024/Genezis-Repo-Cuarto-Semestre/projects):** Un tablero visual para seguir el flujo de trabajo de las tareas desde "Por Hacer" hasta "Finalizado".
+*   **[Wiki (Documentación)](https://github.com/PowerSystem2024/Genezis-Repo-Cuarto-Semestre/wiki):** El espacio central para guías, tutoriales y documentación detallada del proyecto.
 *   **[Milestones (Objetivos)](https://github.com/PowerSystem2024/Genezis-Repo-Cuarto-Semestre/milestones):** Los dos grandes objetivos del semestre, con sus fechas de entrega y barras de progreso.
 *   **[Releases (Versiones)](https://github.com/PowerSystem2024/Genezis-Repo-Cuarto-Semestre/releases):** Las versiones oficiales del proyecto que marcan los hitos importantes, como la configuración inicial y las entregas parciales.
 
