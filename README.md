@@ -1,21 +1,21 @@
+<div align="center">
+
 # Genezis-Repo-Cuarto-Semestre
 
-**¡Bienvenido! Este repositorio centraliza toda la ejercitación, el código y la gestión de nuestro Cuarto y ÚLTIMO Semestre de la Tecnicatura en Programación.**
+<h3>¡Bienvenido! Este repositorio centraliza toda la ejercitación, el código y la gestión de nuestro Cuarto y ÚLTIMO Semestre de la Tecnicatura en Programación.</h3>
 
-<div style="display: flex; justify-content: space-between; align-items: center;">
-  <h1>Grupo GENEZIS - COHORTE 2024</h1>
-  <img src="./logo-genezis-new.png" alt="Logo Genezis" width="150">
+<br>
+
+<img src="./logo-genezis-new.png" alt="Logo Genezis" width="250">
+<h2>Grupo GENEZIS - COHORTE 2024</h2>
+<p>
+  <strong>Integrantes:</strong>
+  <br>
+  Brisa Salvatierra | Javier Quiroga | Fernando Alma | Gabriel Garino
+  <br>
+  Marcos Rodriguez | Luciano Cortez | Nicolas Fernandez
+</p>
 </div>
-
-## Integrantes:
-
-1.  Brisa Salvatierra
-2.  Javier Quiroga
-3.  Fernando Alma
-4.  Gabriel Garino
-5.  Marcos Rodriguez
-6.  Luciano Cortez
-7.  Nicolas Fernandez
 
 ---
 
