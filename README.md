@@ -13,7 +13,7 @@
   <br>
   Brisa Salvatierra | Javier Quiroga | Fernando Alma | Gabriel Garino
   <br>
-  Marcos Rodriguez | Luciano Cortez | Nicolas Fernandez
+  Marcos Rodriguez | Luciano Cortez | Nicolás Fernández
 </p>
 </div>
 
