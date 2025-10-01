@@ -1,0 +1,290 @@
+/* ============================================================
+   REQ 3: TIPOGRAFÍA + Variables y escalas
+   - Variables de color/tamaños
+   - Escala tipográfica fluida con clamp()
+============================================================ */
+:root{
+  --color-fondo:#f4f0e8;
+  --color-texto-principal:#4a3b31;
+  --color-titulo:#8c5a3b;
+  --color-acento-principal:#c89f61;
+  --color-acento-secundario:#7a6a53;
+  --color-borde-tarjeta:#d1c5b0;
+  --color-tarjeta-seleccionada-borde:#b08d57;
+  --color-tarjeta-seleccionada-fondo:#e9e2d5;
+  --color-vida-jugador:#4CAF50;
+  --color-vida-pc:#f44336;
+  --color-ataque-seleccionado:#ff9800;
+
+  --sombra-suave:0 4px 8px rgba(0,0,0,.1);
+  --sombra-profunda:0 6px 12px rgba(0,0,0,.15);
+
+  /* Escala tipográfica fluida = responsive por tamaño de viewport */
+  --step--1:clamp(.9rem,.85rem + .2vw,1rem);
+  --step-0:clamp(1rem,.95rem + .4vw,1.125rem);
+  --step-1:clamp(1.25rem,1.05rem + .8vw,1.5rem);
+  --step-2:clamp(1.75rem,1.4rem + 1.2vw,2.25rem);
+  --step-3:clamp(2.2rem,1.8rem + 1.8vw,3rem);
+}
+
+/* ============================================================
+   REQ 2: BACKGROUND a todo el sitio
+   - Imagen de fondo + overlay oscuro para legibilidad
+============================================================ */
+body{
+  font-family:'Roboto',sans-serif; /* REQ 3: tipografía base */
+  color:var(--color-texto-principal);
+  margin:0;padding:25px;
+  display:flex;flex-direction:column;align-items:center; /* REQ 4: uso display:flex */
+  min-height:100vh;line-height:1.6;
+  background:
+    linear-gradient(rgba(0,0,0,.5),rgba(0,0,0,.5)),
+    url("../assets/Aang_and_Friends.jpg") no-repeat center center fixed;
+  background-size:cover;
+}
+body{font-size:var(--step-0)}
+h1{font-size:var(--step-3)}
+h2{font-size:var(--step-2)}
+h3{font-size:var(--step-1)}
+
+.contenedor{
+  background-color:rgba(255,255,255,.85);
+  backdrop-filter:blur(5px);
+  padding:30px 50px;border-radius:15px;
+  box-shadow:var(--sombra-profunda),0 0 0 1px var(--color-borde-tarjeta);
+  text-align:center;max-width:900px;width:95%;
+}
+
+h1,h2{font-family:'Cinzel',serif;color:var(--color-titulo)} /* REQ 3: tipografía títulos */
+h1{font-weight:700;margin-bottom:15px}
+h2{font-weight:400;margin-bottom:40px;letter-spacing:1px}
+
+/* ============================================================
+   REQ 1 + 5: COLOR y BACKGROUND al h1 + Formato/layout de títulos
+   - Gradiente, bordes redondeados y sombra para destacar el h1
+============================================================ */
+.titulo-hero{
+  color:#fff;
+  background:linear-gradient(135deg,#8c5a3b 0%,#c89f61 45%,#7a6a53 100%);
+  padding:14px 22px;border-radius:14px;box-shadow:0 6px 14px rgba(0,0,0,.15);
+  display:inline-block;margin-top:0;
+}
+
+/* REQ 5: Subtítulo con pseudo-elemento para layout decorativo */
+.titulo-seccion{
+  color:var(--color-titulo);text-transform:uppercase;letter-spacing:1.5px;
+  margin-bottom:28px;position:relative;
+}
+.titulo-seccion::after{
+  content:"";display:block;width:80px;height:4px;border-radius:2px;
+  background:var(--color-acento-principal);margin:10px auto 0;box-shadow:var(--sombra-suave);
+}
+
+/* ============================================================
+   REQ 4: Tipos de display
+   - .boton-reglas usa inline-flex (alinear icono + texto)
+   - Luego lo forzamos a block (override al final) para posicionarlo centrado
+============================================================ */
+.boton-reglas{
+  background-color:var(--color-acento-secundario);color:#fff;border:none;
+  padding:10px 15px;border-radius:8px;cursor:pointer;
+  display:inline-flex; /* display inline-flex (alinear icono + texto) */
+  align-items:center;gap:8px;margin:10px auto 25px auto;
+}
+.boton-reglas:hover{background-color:var(--color-acento-principal);transform:translateY(-2px)}
+.icono-reglas{font-size:1.2em}
+
+/* ============================================================
+   REQ 4: GRID (otro tipo de display para layout responsivo)
+============================================================ */
+.personajes-seleccion{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:25px;
+}
+
+/* Tarjeta personaje */
+.personaje{
+  background:#fff;border:3px solid var(--color-borde-tarjeta);border-radius:10px;
+  padding:20px;cursor:pointer;transition:.3s;box-shadow:var(--sombra-suave);outline:none;
+}
+.personaje:hover:not(:disabled){transform:translateY(-8px) scale(1.03);box-shadow:var(--sombra-profunda);border-color:var(--color-acento-principal)}
+.personaje.seleccionado{border-color:var(--color-tarjeta-seleccionada-borde);background:var(--color-tarjeta-seleccionada-fondo);transform:translateY(-5px) scale(1.08);box-shadow:0 8px 20px rgba(176,141,87,.4)}
+.personaje:disabled{cursor:not-allowed;opacity:.7}
+
+.personaje-avatar{
+  width:120px;
+  height:120px;
+  border-radius:50%;
+  margin:0 auto 15px;
+  border:4px solid var(--color-borde-tarjeta);
+  transition:border-color .3s;
+  /* background-color es manejado por JS para los personajes generados */
+}
+
+.personaje-avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover; /* Para los originales */
+  border-radius:50%;
+  transition:transform .3s
+}
+
+.personaje:hover:not(:disabled) .personaje-avatar img{transform:scale(1.1)}
+.personaje p{margin:0;font-weight:500;font-size:1.2em;color:var(--color-titulo)}
+
+/* ============================================================
+   SLOT de oponente (tragamonedas) — también se comenta Flex/column
+============================================================ */
+.pc-selection-area{background:#4a3b31;border-radius:10px;padding:15px;box-shadow:inset 0 0 10px rgba(0,0,0,.5);margin-top:20px}
+.pc-selection-window{width:120px;height:120px;overflow:hidden;border-radius:50%;border:4px solid var(--color-borde-tarjeta);margin:0 auto}
+.pc-character-reel{
+  display:flex;        /* REQ 4: flex en columna */
+  flex-direction:column;
+  line-height:0;will-change:transform;transition:transform 2.5s cubic-bezier(.25,1,.5,1)
+}
+.pc-character-reel img{display:block;width:120px;height:120px;object-fit:cover}
+.oponente-revelado-texto{margin-top:20px;font-family:'Cinzel',serif;font-size:1.5em;color:var(--color-titulo);height:1.5em;transition:opacity .5s ease-in-out;opacity:0}
+.oponente-revelado-texto.visible{opacity:1}
+
+/* ============================================================
+   REQ 4: FLEXBOX para filas de botones
+============================================================ */
+.acciones{margin-top:40px;display:flex;justify-content:center;gap:20px;flex-wrap:wrap}
+.acciones button{
+  font-family:'Cinzel',serif;font-weight:700;background:var(--color-titulo);color:var(--color-fondo);
+  border:2px solid transparent;padding:15px 30px;font-size:1.1em;border-radius:8px;cursor:pointer;
+  transition:.25s;text-transform:uppercase;
+}
+.acciones button:hover:not(:disabled){background:var(--color-acento-principal);color:var(--color-texto-principal);border-color:var(--color-titulo);transform:translateY(-3px)}
+.acciones button:disabled{background:#b0a69a;color:#7d736a;cursor:not-allowed}
+
+/* ============================================================
+   Layout de combate (Flex + Grid)
+============================================================ */
+.pantalla-combate{display:none}
+.combate-principal{display:flex;gap:30px;align-items:flex-start} /* REQ 4: flex para 2 columnas */
+.combate-principal .info-combate{flex:3}
+.combate-principal .mensajes-combate{flex:2;margin:0;align-self:stretch}
+
+.info-combate{display:grid;grid-template-columns:1fr;gap:30px} /* grid dentro de la columna izquierda */
+.luchador{background:rgba(255,255,255,.9);border:2px solid var(--color-borde-tarjeta);border-radius:10px;padding:20px;box-shadow:var(--sombra-suave)}
+.luchador h3{font-size:1.5em;margin:0 0 15px 0}
+.avatar-combate{width:80px;height:80px;border-radius:50%;margin:0 auto 15px;overflow:hidden}
+.avatar-combate img{width:100%;height:100%;object-fit:cover}
+
+.barra-vida{background:#ddd;border-radius:10px;height:20px;margin:10px 0;overflow:hidden;position:relative}
+.vida-actual{height:100%;border-radius:10px;transition:width .5s ease}
+.luchador:first-child .vida-actual{background:var(--color-vida-jugador)}
+.luchador:last-child .vida-actual{background:var(--color-vida-pc)}
+.vida-texto{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:#fff;font-weight:bold;font-size:.9em}
+
+.ataques-container{margin:20px 0;order:-1}
+.botones-ataque{display:flex;justify-content:center;gap:15px;flex-wrap:wrap}
+.boton-ataque{background:var(--color-acento-secundario);color:#fff;border:3px solid transparent;padding:15px 25px;border-radius:10px;cursor:pointer;font-family:'Cinzel',serif;font-size:1em;display:flex;flex-direction:column;align-items:center;gap:8px;min-width:120px}
+.boton-ataque:hover:not(:disabled){background:var(--color-acento-principal);transform:translateY(-3px)}
+.boton-ataque.seleccionado{border-color:var(--color-ataque-seleccionado);background:var(--color-ataque-seleccionado)}
+.boton-ataque:disabled{background:#999;cursor:not-allowed;opacity:.6}
+.icono-ataque{font-size:1.5em}
+
+.acciones-combate{margin:0 0 30px 0}
+.mensajes-combate{background:rgba(255,255,255,.9);border:2px solid var(--color-borde-tarjeta);border-radius:10px;padding:20px;max-height:400px;overflow-y:auto;text-align:left}
+.mensajes-combate h4{text-align:center;margin:0 0 15px 0}
+.mensaje{background:var(--color-fondo);padding:10px 15px;margin:5px 0;border-radius:5px;border-left:4px solid var(--color-acento-principal)}
+.mensaje.critico{border-left-color:#ff4444;background:#ffebee;font-weight:bold}
+
+.resultado-final{background:rgba(255,255,255,.95);border-radius:15px;padding:30px;margin:20px 0;border:3px solid var(--color-acento-principal)}
+.resultado-final.victoria{border-color:var(--color-vida-jugador)}
+.resultado-final.derrota{border-color:var(--color-vida-pc)}
+
+.avatar-combate.daño{animation:hitFlash .4s ease}
+@keyframes hitFlash{
+  0%{filter:none;transform:scale(1)}
+  50%{filter:brightness(1.25) contrast(1.1);transform:scale(1.04)}
+  100%{filter:none;transform:scale(1)}
+}
+
+/* Modales */
+.modal{display:none;position:fixed;z-index:1000;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,.7);backdrop-filter:blur(5px)}
+.modal-contenido{background:var(--color-fondo);margin:10% auto;padding:30px;border:2px solid var(--color-acento-principal);border-radius:15px;width:90%;max-width:600px;position:relative;max-height:80vh;overflow-y:auto}
+.cerrar-modal{color:var(--color-texto-principal);float:right;font-size:28px;font-weight:bold;cursor:pointer}
+
+/* ============================================================
+   REQ 6: RESPONSIVE
+   - Media queries adaptan paddings, layout en columnas/fila
+   - Además de tipografía fluida (clamp) ya aplicada arriba
+============================================================ */
+@media (max-width:992px){ .contenedor{padding:24px} }
+@media (max-width:768px){ .combate-principal{flex-direction:column;gap:20px} }
+@media (max-width:720px){
+  .personajes-seleccion{display:flex;flex-wrap:wrap;justify-content:center}
+  .personaje{width:min(46%,260px)}
+}
+@media (max-width:480px){
+  .acciones button{width:100%}
+  .botones-ataque{gap:10px}
+  .boton-ataque{min-width:100px;padding:12px 16px}
+  .avatar-combate{width:72px;height:72px}
+}
+
+/* ============================================================
+   FIX Posición del botón Reglas debajo del título (centrado)
+   - Usamos selectores con ID + !important para anular estilos viejos
+   - También muestra otro "tipo de display": block (salto de línea)
+============================================================ */
+#pantallaSeleccion > #btnReglas.boton-reglas,
+#pantallaCombate  > #btnReglasCombate.boton-reglas{
+  position:static !important;
+  inset:auto !important;
+  float:none !important;
+  display:block !important;     /* cambiamos de inline-flex -> block para centrar bajo el h1 */
+  margin:10px auto 25px auto !important;
+}
+
+/* Controles generador - tarjeta compacta y agradable */
+.generador-controles{margin-bottom:20px;display:flex;justify-content:center}
+.generador-card{
+  display:flex;gap:18px;align-items:center;
+  background:linear-gradient(180deg,rgba(255,255,255,.95),rgba(250,247,243,.95));
+  padding:12px 16px;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,.08);
+  border:1px solid rgba(160,140,110,.08);max-width:720px;width:100%;justify-content:space-between;
+}
+.generador-left{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.generador-right{display:flex;gap:10px;align-items:center}
+
+/* Botones generador: versión secundaria y primaria */
+.btn-generar{
+  font-family:'Cinzel',serif;font-weight:700;
+  background:linear-gradient(135deg,#7a6a53 0%,#8c5a3b 60%);
+  color:#fff;border:none;padding:10px 14px;border-radius:8px;cursor:pointer;
+  transition:transform .18s ease,box-shadow .18s ease,opacity .12s;
+  box-shadow:0 4px 10px rgba(122,106,83,.14);
+}
+.btn-generar:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(122,106,83,.18)}
+.btn-generar:active{transform:translateY(0)}
+.btn-generar:disabled{opacity:.6;cursor:not-allowed}
+
+/* Botón primario (más visible para la acción "Generar N") */
+.btn-primario{
+  background:linear-gradient(135deg,#c89f61 0%,#8c5a3b 70%);
+  color:#fff;
+  border:2px solid rgba(0,0,0,.04);
+}
+
+/* Input de cantidad estilizado */
+.input-cantidad{
+  width:110px;padding:8px 10px;border-radius:8px;border:1px solid #ddd;
+  font-size:var(--step-0);text-align:center;background:#fff;box-shadow:inset 0 1px 3px rgba(0,0,0,.03);
+  transition:box-shadow .15s ease,transform .12s ease;
+}
+.input-cantidad:focus{
+  outline:none;box-shadow:0 6px 18px rgba(200,159,97,.14);transform:translateY(-2px);
+  border-color:var(--color-acento-principal);
+}
+.label-cantidad{font-size:.9rem;color:var(--color-vida-pc);margin-right:6px;font-weight:600}
+
+/* Ajustes responsive */
+@media (max-width:560px){
+  .generador-card{flex-direction:column;gap:12px;align-items:center;padding:14px}
+  .generador-left{justify-content:center}
+  .generador-right{justify-content:center}
+  .input-cantidad{width:140px}
+}

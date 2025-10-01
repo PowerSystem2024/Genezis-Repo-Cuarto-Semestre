@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>La Leyenda de Aang: El Avatar</title>
+
+  <!-- REQ 3: Tipografía (Google Fonts) -->
+  <!-- Cargamos Cinzel (títulos) y Roboto (texto) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- CSS principal -->
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <!-- REQ 2: Background a todo el sitio
+       Se aplica en CSS sobre body con imagen + overlay -->
+  <main class="contenedor">
+
+    <!-- Modal Reglas -->
+    <div id="modalReglas" class="modal" role="dialog" aria-hidden="true">
+      <div class="modal-contenido">
+        <span class="cerrar-modal" aria-label="Cerrar">&times;</span>
+        <h2>Reglas del Juego</h2>
+        <div class="reglas-contenido">
+          <h3>🎮 Cómo Jugar</h3>
+          <ol>
+            <li>Elegí tu personaje. La PC elige el suyo al azar.</li>
+            <li>Ambos inician con 100 puntos de vida.</li>
+            <li>Por turnos, elegí uno de los tres ataques.</li>
+          </ol>
+          <h3>⚔️ Sistema</h3>
+          <p>🦵 Patada &gt; 👊 Puño | 👊 Puño &gt; 🌀 Barrida | 🌀 Barrida &gt; 🦵 Patada</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Oponente (tragamonedas) -->
+    <div id="modalOponente" class="modal" role="dialog" aria-hidden="true">
+      <div class="modal-contenido">
+        <h2>Eligiendo Oponente...</h2>
+        <div class="pc-selection-area">
+          <div class="pc-selection-window">
+            <div id="pc-character-reel" class="pc-character-reel"></div>
+          </div>
+        </div>
+        <p id="oponente-revelado-texto" class="oponente-revelado-texto"></p>
+      </div>
+    </div>
+
+    <!-- Pantalla de Selección -->
+    <div id="pantallaSeleccion" class="pantalla-seleccion">
+      <!-- REQ 1 y 5: h1 con color y background + formato/layout de títulos -->
+      <h1 class="titulo-hero">La Leyenda de Aang: El Avatar</h1>
+
+      <!-- REQ 4: display inline-flex en el botón y override a block para centrarlo -->
+      <button id="btnReglas" class="boton-reglas"><span class="icono-reglas">❔</span> Reglas del Juego</button>
+
+      <!-- REQ 5: Subtítulo con layout decorativo -->
+      <h2 class="titulo-seccion">Elegí tu personaje</h2>
+
+      <!-- Controles para el Generador de personajes -->
+      <div class="generador-controles" aria-label="Generador de personajes">
+        <div class="generador-card">
+          <div class="generador-left">
+            <button id="btnGenerar100" class="btn-generar" type="button">Generar 100</button>
+            <button id="btnGenerar1000" class="btn-generar" type="button">Generar 1000</button>
+          </div>
+          <div class="generador-right">
+            <label for="inputCantidad" class="label-cantidad">Cantidad</label>
+            <input id="inputCantidad" class="input-cantidad" type="number" min="1" value="100" />
+            <button id="btnGenerarN" class="btn-generar btn-primario" type="button">Generar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- REQ 4: Grid para las tarjetas de personaje -->
+      <!-- CLASE 5: Este contenedor está vacío. 
+           JavaScript se encarga de llenarlo dinámicamente al cargar la página. -->
+      <div class="personajes-seleccion" id="personajesSeleccion"></div>
+
+      <!-- REQ 4: Flexbox para los botones de acción -->
+      <div class="acciones">
+        <button id="btnCombate" disabled>Iniciar combate</button>
+      </div>
+    </div>
+
+    <!-- Pantalla de Combate -->
+    <div id="pantallaCombate" class="pantalla-combate">
+      <h1 class="titulo-hero">¡Combate Avatar!</h1>
+      <button id="btnReglasCombate" class="boton-reglas"><span class="icono-reglas">❔</span> Reglas del Juego</button>
+
+      <div class="ataques-container">
+        <div class="botones-ataque">
+          <button class="boton-ataque" id="btnPunio" data-ataque="punio"><div class="icono-ataque">👊</div><span>Puño</span></button>
+          <button class="boton-ataque" id="btnPatada" data-ataque="patada"><div class="icono-ataque">🦵</div><span>Patada</span></button>
+          <button class="boton-ataque" id="btnBarrida" data-ataque="barrida"><div class="icono-ataque">🌀</div><span>Barrida</span></button>
+        </div>
+      </div>
+
+      <div class="acciones acciones-combate">
+        <button id="btnAtacar" disabled>¡Atacar!</button>
+        <button id="btnReiniciar">Nuevo Juego</button>
+      </div>
+
+      <!-- REQ 4: Flexbox para el layout principal del combate -->
+      <div class="combate-principal">
+        <div class="info-combate">
+          <div class="luchador">
+            <h3 id="nombreJugador">Jugador</h3>
+            <div class="avatar-combate"><img id="imagenJugador" src="" alt="Avatar jugador"></div>
+            <div class="barra-vida"><div class="vida-actual" id="vidaJugador" style="width: 100%;"><div class="vida-texto" id="textoVidaJugador">100/100</div></div></div>
+          </div>
+
+          <div class="luchador">
+            <h3 id="nombrePC">PC</h3>
+            <div class="avatar-combate"><img id="imagenPC" src="" alt="Avatar PC"></div>
+            <div class="barra-vida"><div class="vida-actual" id="vidaPC" style="width: 100%;"><div class="vida-texto" id="textoVidaPC">100/100</div></div></div>
+          </div>
+        </div>
+
+        <div class="mensajes-combate">
+          <h4>Registro de Combate:</h4>
+          <div id="mensajesCombate"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- REQ extra de buenas prácticas: el script se carga al final del body -->
+  <script src="js/avatar.js"></script>
+</body>
+</html>
