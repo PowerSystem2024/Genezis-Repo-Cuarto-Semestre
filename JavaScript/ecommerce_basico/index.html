@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>AutoMarket Simple</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header style="display:flex; justify-content:space-between; align-items:center; background:#1a73e8; color:#fff; padding:1em;">
+    <h1 style="margin:0;">AutoMarket</h1>
+    <button id="openCart" style="background:#fff; color:#1a73e8; font-weight:bold; border-radius:20px; padding:.5em 1em; border:none; cursor:pointer;">
+      🛒 Carrito (<span id="count">0</span>)
+    </button>
+  </header>
+  <main>
+    <div id="productos" class="grid"></div>
+    <div id="carrito"
+      style="display:none; border:1px solid #ccc; padding:1em; max-width:400px; background:#fff; position:fixed; top:80px; left:60vw; z-index:100;">
+      <h2 id="carritoHeader" style="cursor:move; display:flex; align-items:center; justify-content:space-between;">
+        Carrito
+        <button id="minCarrito" style="margin-left:10px; font-size:1em;">_</button>
+      </h2>
+      <div id="cartItems" style="height:220px; overflow:auto;"></div>
+      <div style="margin-top:1em; font-size:1.2em;">
+        <b>Total:</b> <span id="total">$ 0</span>
+      </div>
+      <button id="empty">Vaciar</button>
+      <button id="checkout">Comprar</button>
+      <button id="closeCart">Cerrar</button>
+    </div>
+    <div id="toast"></div>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>
