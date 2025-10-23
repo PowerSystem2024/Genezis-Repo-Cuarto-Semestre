@@ -1,0 +1,43 @@
+# Opcional: ignora el archivo de ayuda (elimínalo si quieres versionarlo)
+HELP.md
+
+# Maven
+target/
+
+# Maven Wrapper (asegúrate de versionar el wrapper)
+!.mvn/wrapper/maven-wrapper.jar
+!.mvn/wrapper/maven-wrapper.properties
+# Asegúrate también de añadir al repo: mvnw y mvnw.cmd (no se ignoran aquí)
+
+# Gradle (solo si también usas Gradle)
+build/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+out/
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# SO/Archivos temporales y logs
+.DS_Store
+Thumbs.db
+*.log
+hs_err_pid*
+replay_pid*
