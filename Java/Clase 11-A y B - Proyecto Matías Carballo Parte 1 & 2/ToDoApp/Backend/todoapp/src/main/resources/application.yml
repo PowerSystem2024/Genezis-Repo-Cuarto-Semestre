@@ -1,0 +1,46 @@
+# Le decimos a nuestro servidor Tomcat que use el puerto 8081
+server:
+  port: 8081
+
+spring:
+  application:
+    name: todo-app
+
+  # 1. Configuraci�n de la Base de Datos
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # La "direcci�n" de la BBDD
+    url: "jdbc:mysql://localhost:3306/db_todo_api?createDatabaseIfNotExist=true"
+
+    # �Pr�ctica de Seguridad!
+    # Le decimos a Spring que lea estas variables del "entorno"
+    username: ${DB_USER}
+    password: ${DB_PASS}
+
+  # 2. Configuraci�n de JPA y Hibernate
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      # "update" -> Actualiza las tablas si ven cambios en el c�digo Java
+      ddl-auto: update
+
+    # Muestra en consola el SQL que se est� ejecutando
+    show-sql: true
+    properties:
+      hibernate:
+        # Formatea ese SQL para que sea legible
+        format_sql: true
+
+  # 3. Configuraci�n Est�tica
+  # Habilita los logs con colores en la consola
+  output:
+    ansi:
+      enabled: always
+
+# 4. Configuraci�n personalizada de la Aplicaci�n
+app:
+  cors:
+    # Lista de dominios permitidos. Para desarrollo, pon la URL de tu frontend.
+    # Si tienes m�ltiples (ej. un frontend local y uno de prueba), sep�ralos por coma:
+    # allowed-origins: http://localhost:3000,http://localhost:4200
+    allowed-origins: http://localhost:3000
