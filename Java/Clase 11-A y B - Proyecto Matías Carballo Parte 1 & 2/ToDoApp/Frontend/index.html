@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TODO App | UTN FRSR</title>
+    <link rel="icon" type="image/png" href="./assets/img/rocket.svg" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Dosis&family=Open+Sans&family=Parisienne&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./assets/css/styles.css" />
+  </head>
+  <body>
+    <main>
+      <div class="mainCard">
+        
+        <header class="header">
+          <img src="./assets/img/utn.png" alt="Logo UTN" />
+          <h2>UTN FRSR</h2>
+        </header>
+
+        <h1 class="titleApp">Gestor de Tareas TO DO LIST</h1>
+
+        <div>
+          <form class_ ="form" id="taskForm">
+            <input
+              type="text"
+              name="task"
+              placeholder="Nombre de la tarea"
+              class="inputForm"
+              autocomplete="off"
+              data-form-input
+              required
+            />
+            
+            <input 
+              type="date" 
+              data-form-date
+              required 
+            />
+            <input 
+              type="time" 
+              data-form-time 
+              required
+            />
+
+            <button type="submit" class="btnCreate" data-form-btn>
+              Agregar <i class="fas fa-plus-circle"></i>
+            </button>
+          </form>
+        </div>
+        <ul class="cardsList" data-list>
+          </ul>
+      </div>
+    </main>
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment-with-locales.min.js"></script>
+
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <script type="module" src="./assets/script/script.js"></script>
+  </body>
+</html>

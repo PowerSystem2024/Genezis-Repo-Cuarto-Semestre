@@ -17,10 +17,20 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
+// 1. =======================================================
+//   ¡IMPORTA ESTA CLASE!
+// ==========================================================
+import org.springframework.web.bind.annotation.CrossOrigin;
+
 import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/tasks")
+// 2. =======================================================
+//   ¡AÑADE ESTA ANOTACIÓN AQUÍ!
+//   Esto le da permiso a tu frontend (en el puerto 5501)
+// ==========================================================
+@CrossOrigin(origins = "http://127.0.0.1:5501")
 @RequiredArgsConstructor
 @Tag(name = "Gestión de Tareas", description = "Endpoints para crear, leer, actualizar y eliminar tareas")
 public class TaskController {
