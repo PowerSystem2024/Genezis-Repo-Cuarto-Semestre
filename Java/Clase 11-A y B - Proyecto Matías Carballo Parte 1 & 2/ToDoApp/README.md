@@ -1,104 +1,154 @@
 
-# API REST para Gestión de Tareas (ToDo App) - Backend
+-----
+
+# Aplicación Full-Stack de Gestión de Tareas (ToDo App)
+
 ![Java](https://img.shields.io/badge/Java-17-blue)
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.x-green)
 ![MySQL](https://img.shields.io/badge/MySQL-8.0-orange)
 ![Maven](https://img.shields.io/badge/Maven-3.x-red)
+![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-yellow)
+![HTML5](https://img.shields.io/badge/HTML5-E34F26)
+![CSS3](https://img.shields.io/badge/CSS3-1572B6)
 ![Swagger](https://img.shields.io/badge/Swagger-OpenAPI-blueviolet)
 
-Este repositorio contiene el backend completo para una aplicación de "ToDo List", desarrollado como parte de la Clase 11 (a y b). El proyecto ha sido profundamente analizado y refactorizado para seguir las mejores prácticas de arquitectura de software, principios SOLID y patrones de diseño de nivel empresarial.
+Este repositorio contiene una aplicación **Full-Stack** de "ToDo List". El proyecto ha sido profundamente analizado y refactorizado para seguir las mejores prácticas de arquitectura de software, tanto en el backend como en el frontend.
 
-El propósito es servir como una base de código robusta, escalable y mantenible para una aplicación de gestión de tareas, exponiendo una API RESTful segura y bien documentada.
+* **Backend (API):** Una API RESTful robusta, escalable y segura construida con Java y Spring Boot.
+* **Frontend (UI):** Una interfaz de usuario moderna, modular y 100% responsiva construida con **HTML, CSS y JavaScript Vainilla (ES6+)**.
 
----
+El propósito es servir como una base de código completa, demostrando una arquitectura limpia y desacoplada en ambas partes de la aplicación.
 
-### Características Principales
+-----
+
+## Arquitectura y Características
+
+### Backend (API)
 
 Este no es un CRUD básico. La arquitectura de esta API incluye:
 
-* **Arquitectura Limpia en Capas:** Separación estricta de responsabilidades (Capa de Controlador, Servicio y Repositorio).
-* **Patrón DTO (Data Transfer Object):** Se utilizan DTOs (`TaskRequestDTO`, `TaskResponseDTO`) para desacoplar el contrato de la API de la entidad de la base de datos, mejorando la seguridad y la flexibilidad.
-* **Inyección de Dependencias (SOLID):** Se adhiere al Principio de Inversión de Dependencias, inyectando la interfaz (`ITaskService`) en el controlador.
-* **Borrado Lógico (Soft Delete):** Las tareas no se eliminan físicamente. Se utiliza `@SQLDelete` y `@Where` para "ocultarlas", preservando la integridad de los datos.
-* **Auditoría de Entidades (JPA Auditing):** El campo `createdDate` se rellena automáticamente en el momento de la creación gracias a `@CreatedDate`.
-* **Manejo Centralizado de Excepciones:** Un `@ControllerAdvice` (`ExceptionHandler`) intercepta las excepciones personalizadas (`ToDoExceptions`) para enviar respuestas de error JSON limpias y estandarizadas (ej. 404).
-* **Validación de API:** Se utiliza `jakarta.validation` (con `@Valid`, `@NotBlank`) en la capa de Controlador para rechazar peticiones inválidas.
-* **Documentación Automática:** La API se documenta a sí misma usando `Springdoc OpenAPI (Swagger)`.
-* **Configuración Segura:** La información sensible (usuario y contraseña de BBDD) se gestiona a través de Variables de Entorno, no hardcodeada en el `application.yml`.
-* **CORS Configurado:** Permite peticiones desde un frontend (ej. `localhost:3000`) de forma segura.
+* **Arquitectura Limpia en Capas:** Separación estricta de responsabilidades (Controlador, Servicio, Repositorio).
+* **Patrón DTO (Data Transfer Object):** Se utilizan DTOs (`TaskRequestDTO`, `TaskResponseDTO`) para desacoplar el contrato de la API de la entidad de la base de datos.
+* **Inyección de Dependencias (SOLID):** Se adhiere al Principio de Inversión de Dependencias (inyectando `ITaskService`).
+* **Borrado Lógico (Soft Delete):** Las tareas no se eliminan físicamente (`@SQLDelete` y `@Where`).
+* **Auditoría de Entidades:** El campo `createdDate` se rellena automáticamente (`@CreatedDate`).
+* **Manejo Centralizado de Excepciones:** Un `@ControllerAdvice` (`ExceptionHandler`) para respuestas de error JSON limpias.
+* **Validación de API:** Se utiliza `jakarta.validation` (`@Valid`, `@NotBlank`) en el Controlador.
+* **Documentación Automática:** API documentada con `Springdoc OpenAPI (Swagger)`.
+* **Configuración Segura:** Credenciales de BBDD gestionadas a través de Variables de Entorno.
+* **CORS Configurado:** Permite peticiones desde el frontend (`http://127.0.0.1:5501`) de forma segura.
 
----
+### Frontend (UI)
 
-##  Tecnologías Utilizadas
+La interfaz de usuario fue construida desde cero sin frameworks, enfocándose en la modularidad y el rendimiento.
 
-* **Java 17**
-* **Spring Boot 3.x**
-* **Spring Data JPA (Hibernate)**: Para la persistencia de datos.
-* **MySQL 8**: Como base de datos relacional.
-* **Maven**: Como gestor de dependencias y construcción del proyecto.
-* **Lombok**: Para reducir el código repetitivo (boilerplate).
-* **Springdoc OpenAPI (Swagger)**: Para la documentación de la API.
-* **Insomnia/Postman**: Para pruebas de endpoints.
+* **Stack "Vanilla":** Construido con HTML5 semántico, CSS3 moderno y JavaScript Vainilla (ES6+).
+* **Arquitectura Modular (ES6 Modules):** El código está organizado en carpetas con responsabilidades claras:
+    * `/components`: Módulos que crean y manejan elementos del DOM (ej. `addTask.js`, `deleteIco.js`).
+    * `/data`: Módulos de "capa de datos" que manejan **exclusivamente** la comunicación `fetch` con la API.
+* **Separación de Responsabilidades (SoC):**
+    * La **Capa de UI** (`/components`) maneja los eventos (`click`, `submit`).
+    * La **Capa de Datos** (`/data`) es `async` y usa `throw` para lanzar errores.
+    * La UI llama a la capa de datos dentro de bloques `try...catch` para manejar el éxito o el error (mostrando alertas `SweetAlert2`).
+* **Rendimiento (Experiencia SPA):**
+    * **¡Sin recargas de página!** La aplicación nunca usa `window.location.reload()`.
+    * Las tareas se añaden (`appendChild`) y eliminan (`remove`) del DOM instantáneamente, creando una experiencia de usuario fluida y rápida.
+    * La lógica de carga (`displayTasks`) usa un `Map` para agrupar tareas (O(n)), evitando bucles anidados O(n²).
+* **CSS Moderno y Responsivo:**
+    * **Mobile-First:** El diseño está construido para móviles primero y escala a escritorio.
+    * **Variables CSS:** Todos los colores y tamaños están centralizados en `:root` para un fácil mantenimiento.
+    * **Modo Oscuro (Dark Mode) Automático:** La aplicación respeta la preferencia del sistema operativo del usuario usando `@media (prefers-color-scheme: dark)`.
+* **Accesibilidad (A11y):** Se aseguran los indicadores de foco (`:focus`) para la navegación por teclado.
 
----
+-----
 
-##  Puesta en Marcha (Getting Started)
+## Tecnologías Utilizadas
 
-Sigue estos pasos para ejecutar el proyecto en tu máquina local.
+| Stack | Tecnología | Propósito |
+| :--- | :--- | :--- |
+| **Backend** | Java 17 | Lenguaje principal |
+| **Backend** | Spring Boot 3.x | Framework de la API |
+| **Backend** | Spring Data JPA | Persistencia de datos (Hibernate) |
+| **Backend** | MySQL 8 | Base de datos relacional |
+| **Backend** | Maven | Gestor de dependencias |
+| **Backend** | Lombok | Reducción de boilerplate |
+| **Backend** | Springdoc OpenAPI | Documentación (Swagger) |
+| **Frontend**| HTML 5 | Estructura semántica |
+| **Frontend**| CSS 3 | Estilos (Variables, Flexbox, Dark Mode) |
+| **Frontend**| JavaScript (ES6+) | Lógica de UI (Módulos, `async/await`, `fetch`) |
+| **Frontend**| SweetAlert2 | Alertas y modales de confirmación |
+| **Frontend**| Live Server (VSCode) | Entorno de desarrollo local |
+
+-----
+
+## Puesta en Marcha (Getting Started)
+
+Sigue estos pasos para ejecutar el proyecto **Full-Stack** en tu máquina local.
 
 ### 1. Prerrequisitos
 
 Asegúrate de tener instalado:
+
 * Git
 * JDK 17 (o superior)
 * Apache Maven 3.x
-* Un servidor de MySQL 8 (como el Community Server o XAMPP)
+* Un servidor de MySQL 8
+* Visual Studio Code
+* La extensión [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) en VSCode.
 
 ### 2. Clonar el Repositorio
 
 ```bash
-git clone [https://github.com/tu-usuario/tu-repositorio.git](https://github.com/tu-usuario/tu-repositorio.git)
-cd tu-repositorio
-```
-### 3\. Configurar la Base de Datos
+git clone [https://github.com/fernando-alma/ToDo-App-Full-Stack-API-REST-Frontend-.git](https://github.com/fernando-alma/ToDo-App-Full-Stack-API-REST-Frontend-.git)
+````
 
-1.  Abre tu cliente de MySQL (Workbench, XAMPP, etc.).
+### 3\. Configurar la Base de Datos (Backend)
+
+1.  Abre tu cliente de MySQL.
 2.  Crea una nueva base de datos (schema) llamada `db_todo_api`.
     ```sql
     CREATE DATABASE db_todo_api;
     ```
-3.  La aplicación **creará las tablas automáticamente** la primera vez que se ejecute (gracias a `ddl-auto: update`).
+3.  La aplicación **creará las tablas automáticamente** (`ddl-auto: update`).
 
-### 4\. Configurar las Variables de Entorno (¡Importante\!)
+### 4\. Configurar Variables de Entorno (Backend)
 
-La aplicación **no funcionará** si no se configuran las credenciales de la base de datos.
+La aplicación **no funcionará** si no se configuran las credenciales de la BBDD.
 
-Si usas **IntelliJ IDEA** (recomendado):
+Si usas **IntelliJ IDEA**:
 
-1.  En la esquina superior derecha, haz clic en "Edit Configurations...".
-2.  Busca tu configuración de `TodoAppApplication`.
-3.  Haz clic en "Modify options" y selecciona "Add environment variables".
+1.  Ve a "Edit Configurations...".
+2.  Busca tu `TodoAppApplication`.
+3.  Haz clic en "Modify options" -\> "Add environment variables".
 4.  Añade las siguientes dos variables:
       * **`DB_USER`**: `root` (o tu usuario de MySQL)
       * **`DB_PASS`**: `tu_contraseña_secreta`
 
-### 5\. Ejecutar la Aplicación
+### 5\. Ejecutar el Backend (API)
 
-1.  Abre el proyecto en IntelliJ.
+1.  Abre la carpeta `/Backend` en IntelliJ.
 2.  Deja que Maven descargue las dependencias.
-3.  Navega al archivo `src/main/java/.../TodoAppApplication.java` y presiona el botón "Play" (▶).
-4.  La consola debería mostrar el mensaje:
+3.  Ejecuta `src/main/java/.../TodoAppApplication.java`.
+4.  La consola debe mostrar:
     `Tomcat started on port(s): 8081 (http)`
+5.  **¡El backend ya está listo\!**
+
+### 6\. Ejecutar el Frontend (UI)
+
+1.  Abre la carpeta raíz del proyecto en **Visual Studio Code**.
+2.  Navega a la carpeta `/Frontend`.
+3.  Haz clic derecho en el archivo `index.html`.
+4.  Selecciona **"Open with Live Server"**.
+5.  Tu navegador se abrirá automáticamente en `http://127.0.0.1:5501` (o un puerto similar).
+6.  **¡La aplicación Full-Stack está funcionando\!**
 
 -----
 
-##  Documentación de la API (Endpoints)
+## Documentación de la API (Endpoints)
 
-Una vez que la aplicación esté corriendo, puedes acceder a la documentación interactiva de Swagger en tu navegador:
+Una vez que el **backend** esté corriendo, puedes acceder a la documentación interactiva de Swagger:
 
 ➡️ **`http://localhost:8081/swagger-ui/index.html`**
-
-### Endpoints Principales
 
 | Método | URL | Descripción |
 | :--- | :--- | :--- |
@@ -119,7 +169,7 @@ Una vez que la aplicación esté corriendo, puedes acceder a la documentación i
 
 -----
 
-##  Próximas Implementaciones (Roadmap)
+## Próximas Implementaciones (Roadmap)
 
 Este proyecto es la base. Las siguientes mejoras planificadas para llevar esta API a un nivel de producción completo son:
 
@@ -130,14 +180,10 @@ Este proyecto es la base. Las siguientes mejoras planificadas para llevar esta A
 
   * **2. Pruebas Unitarias (JUnit & Mockito):**
 
-      * Escribir pruebas unitarias para la capa de servicio (`TaskService`) para garantizar que la lógica de negocio sea correcta y prevenir regresiones.
+      * Escribir pruebas unitarias para la capa de servicio (`TaskService`) para garantizar que la lógica de negocio sea correcta.
 
   * **3. Contenerización (Docker):**
 
-      * Crear un `Dockerfile` y un `docker-compose.yml` para empaquetar la API y su base de datos MySQL, permitiendo un despliegue fácil y consistente en cualquier entorno con un solo comando.
-
-  * **4. Integración con Frontend:**
-
-      * Consumir esta API desde una aplicación cliente (React, Angular, Vue, etc.) para completar la aplicación Full-Stack.
+      * Crear un `Dockerfile` y un `docker-compose.yml` para empaquetar la API y su base de datos MySQL, permitiendo un despliegue fácil y consistente.
 
 <!-- end list -->
