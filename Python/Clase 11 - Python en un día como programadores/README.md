@@ -60,6 +60,6 @@ Finalmente, se registraron los archivos creados en el control de versiones de Gi
 | :-- | :--- | :--- | :--- |
 | **12.a**| Preparación de Archivos | `git add .` | Se agregaron todos los archivos del directorio actual (`.`) al área de *staging* para ser incluidos en el *commit*. |
 | **12.b**| Registro del Historial | `git commit -m "feat: Inicialización del proyecto y configuración de entorno virtual"` | Se creó el primer *commit*, marcando el estado inicial del proyecto con una descripción clara. |
-| **12.c**| Conexión Remota | `git remote add origin https://aws.amazon.com/es/what-is/repo/` | Se estableció el enlace al repositorio remoto (ej. GitHub), dándole el alias `origin`. |
+| **12.c**| Conexión Remota | `git remote add origin https://github.com/PowerSystem2024/Genezis-Repo-Cuarto-Semestre.git` | Se estableció el enlace al repositorio remoto (ej. GitHub), dándole el alias `origin`. |
 | **12.d**| Subida de Cambios | `git push -u origin main` (o `master`) | Se subieron los *commits* locales a la rama principal del repositorio remoto, completando el envío del trabajo. |
 | **13** | Enlace Final | *[GrupoGenezis - Cuarto Semestre](https://github.com/PowerSystem2024/Genezis-Repo-Cuarto-Semestre/tree/main/Python)* | Este documento (`README.md`) y el archivo `finales.py` están disponibles en el repositorio remoto. |
