@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Botón de Emergencia</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Alertas durante cuenta regresiva -->
+        <div id="alert-container" class="hidden">
+            <div class="alert-icon">⚠</div>
+            <span class="alert-text">¡ALERTA DE EMERGENCIA!</span>
+            <div class="alert-icon">⚠</div>
+        </div>
+
+        <!-- Overlay rojo parpadeante -->
+        <div id="red-overlay" class="hidden"></div>
+
+        <!-- Cuenta regresiva -->
+        <div id="countdown-display" class="hidden"></div>
+
+        <!-- Contenedor principal con perspectiva 3D -->
+        <div id="button-container">
+            <!-- Caja protectora -->
+            <div id="protective-case">
+                <!-- Base de la caja -->
+                <div class="case-base"></div>
+                
+                <!-- Tapa de vidrio -->
+                <div id="glass-lid">
+                    <div class="glass-top">
+                        <div class="glass-shine"></div>
+                        <div class="glass-reflection"></div>
+                        <div class="warning-label">
+                            <div class="warning-stripes"></div>
+                            <span class="warning-text">⚠ EMERGENCY ⚠</span>
+                        </div>
+                        <div class="open-instruction">PRESIONE PARA ABRIR</div>
+                    </div>
+                    <div class="glass-side glass-front"></div>
+                    <div class="glass-side glass-back"></div>
+                    <div class="glass-side glass-left"></div>
+                    <div class="glass-side glass-right"></div>
+                </div>
+            </div>
+
+            <!-- Botón de emergencia -->
+            <button id="emergency-button" disabled>
+                <div class="button-gradient"></div>
+                <div class="button-inner">
+                    <span id="button-text">PRESIONAR</span>
+                </div>
+                <div class="button-shadow"></div>
+            </button>
+        </div>
+
+        <!-- Pantalla de explosión -->
+        <div id="explosion-screen" class="hidden">
+            <div id="explosion-fragments"></div>
+            <div class="explosion-message">
+                <div class="error-text">⚠ ERROR ⚠</div>
+                <div class="device-text">TU DISPOSITIVO</div>
+                <div class="destroyed-text">HA SIDO DESTRUIDO</div>
+                <div class="system-text">SISTEMA CRÍTICO FALLIDO</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

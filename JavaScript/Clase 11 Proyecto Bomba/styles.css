@@ -1,0 +1,495 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    overflow: hidden;
+}
+
+#app {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f0f0f 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    perspective: 1500px;
+}
+
+/* Alertas */
+#alert-container {
+    position: absolute;
+    top: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    z-index: 30;
+    animation: pulse 1s infinite;
+}
+
+.alert-icon {
+    font-size: 64px;
+    color: #ef4444;
+}
+
+.alert-text {
+    color: #ef4444;
+    font-size: 36px;
+    font-weight: bold;
+}
+
+/* Overlay rojo */
+#red-overlay {
+    position: absolute;
+    inset: 0;
+    background: #dc2626;
+    opacity: 0.2;
+    animation: pulse 1s infinite;
+    pointer-events: none;
+    z-index: 10;
+}
+
+/* Cuenta regresiva */
+#countdown-display {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 320px;
+    font-weight: bold;
+    color: #ef4444;
+    pointer-events: none;
+    z-index: 20;
+    animation: bounce 1s infinite;
+    text-shadow: 0 0 80px rgba(239, 68, 68, 0.8);
+}
+
+/* Contenedor principal */
+#button-container {
+    position: relative;
+    width: 400px;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform-style: preserve-3d;
+    perspective: 2000px;
+    perspective-origin: center 100px;
+}
+
+/* Caja protectora */
+#protective-case {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+}
+
+.case-base {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 380px;
+    height: 60px;
+    background: linear-gradient(to bottom, #374151, #1f2937);
+    border-radius: 8px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+.case-base::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: 10px;
+    right: 10px;
+    height: 5px;
+    background: #4b5563;
+    border-radius: 2px;
+}
+
+/* Tapa de vidrio */
+#glass-lid {
+    position: absolute;
+    width: 360px;
+    height: 320px;
+    left: 50%;
+    bottom: 50px;
+    transform-origin: bottom center;
+    transform: translateX(-50%);
+    transform-style: preserve-3d;
+    transition: all 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    cursor: pointer;
+    z-index: 10;
+}
+
+#glass-lid:hover .glass-top {
+    background: linear-gradient(135deg, 
+        rgba(147, 197, 253, 0.35), 
+        rgba(191, 219, 254, 0.25),
+        rgba(147, 197, 253, 0.35));
+}
+
+#glass-lid.opening {
+    transform: translateX(-50%) rotateX(-120deg) translateY(300px) translateZ(-200px);
+    cursor: default;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* Cara superior del vidrio */
+.glass-top {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, 
+        rgba(147, 197, 253, 0.3), 
+        rgba(191, 219, 254, 0.2),
+        rgba(147, 197, 253, 0.3));
+    backdrop-filter: blur(10px);
+    border: 3px solid rgba(96, 165, 250, 0.4);
+    border-radius: 12px;
+    box-shadow: 
+        inset 0 0 60px rgba(255, 255, 255, 0.1),
+        0 8px 32px rgba(0, 0, 0, 0.3),
+        0 0 100px rgba(96, 165, 250, 0.2);
+    transform: translateZ(0);
+    transition: all 0.3s;
+}
+
+/* Brillo del vidrio */
+.glass-shine {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 120px;
+    height: 120px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, transparent 70%);
+    border-radius: 50%;
+    filter: blur(20px);
+    animation: shine-float 3s ease-in-out infinite;
+}
+
+/* Reflejo del vidrio */
+.glass-reflection {
+    position: absolute;
+    top: 40%;
+    right: 30px;
+    width: 80px;
+    height: 150px;
+    background: linear-gradient(45deg, 
+        transparent,
+        rgba(255, 255, 255, 0.15),
+        transparent);
+    transform: rotate(-20deg);
+    filter: blur(5px);
+}
+
+/* Etiqueta de advertencia */
+.warning-label {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(239, 68, 68, 0.9);
+    padding: 8px 20px;
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.warning-stripes {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 10px,
+        rgba(255, 255, 255, 0.1) 10px,
+        rgba(255, 255, 255, 0.1) 20px
+    );
+    border-radius: 4px;
+}
+
+.warning-text {
+    position: relative;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    letter-spacing: 1px;
+}
+
+/* Instrucción de apertura */
+.open-instruction {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgba(30, 58, 138, 0.9);
+    font-weight: bold;
+    font-size: 18px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.3);
+    padding: 10px 20px;
+    border-radius: 8px;
+    backdrop-filter: blur(5px);
+    animation: pulse-instruction 2s ease-in-out infinite;
+}
+
+/* Lados del vidrio */
+.glass-side {
+    position: absolute;
+    background: linear-gradient(to bottom,
+        rgba(147, 197, 253, 0.25),
+        rgba(147, 197, 253, 0.15));
+    backdrop-filter: blur(8px);
+    border: 2px solid rgba(96, 165, 250, 0.3);
+}
+
+.glass-front {
+    width: 100%;
+    height: 50px;
+    bottom: 0;
+    transform: rotateX(90deg);
+    transform-origin: bottom;
+    border-radius: 0 0 12px 12px;
+}
+
+.glass-back {
+    width: 100%;
+    height: 50px;
+    top: 0;
+    transform: rotateX(-90deg);
+    transform-origin: top;
+    border-radius: 12px 12px 0 0;
+}
+
+.glass-left {
+    width: 50px;
+    height: 100%;
+    left: 0;
+    transform: rotateY(90deg);
+    transform-origin: left;
+    border-radius: 12px 0 0 12px;
+}
+
+.glass-right {
+    width: 50px;
+    height: 100%;
+    right: 0;
+    transform: rotateY(-90deg);
+    transform-origin: right;
+    border-radius: 0 12px 12px 0;
+}
+
+/* Botón de emergencia */
+#emergency-button {
+    position: relative;
+    width: 280px;
+    height: 280px;
+    border: none;
+    border-radius: 50%;
+    background: #7f1d1d;
+    cursor: not-allowed;
+    transition: all 0.5s;
+    outline: none;
+    transform: translateZ(-40px);
+    pointer-events: auto;
+}
+
+#emergency-button.enabled {
+    background: #dc2626;
+    cursor: pointer;
+    box-shadow: 0 0 100px rgba(220, 38, 38, 0.8);
+    animation: glow-pulse 2s ease-in-out infinite;
+    transform: translateZ(50px);
+    z-index: 100;
+}
+
+#emergency-button.enabled:hover {
+    transform: translateZ(50px) scale(1.05);
+}
+
+#emergency-button.active {
+    animation: button-alert 0.5s infinite;
+    transform: translateZ(50px) scale(0.95);
+}
+
+.button-gradient {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: linear-gradient(to bottom, 
+        rgba(248, 113, 113, 0.5), 
+        rgba(153, 27, 27, 0.5));
+    pointer-events: none;
+}
+
+.button-inner {
+    position: absolute;
+    inset: 40px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #ef4444, #dc2626, #991b1b);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: inset 0 -10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.button-shadow {
+    position: absolute;
+    inset: 20px;
+    border-radius: 50%;
+    box-shadow: inset 0 8px 16px rgba(0, 0, 0, 0.4);
+    pointer-events: none;
+}
+
+#button-text {
+    color: white;
+    font-size: 32px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Pantalla de explosión */
+#explosion-screen {
+    position: absolute;
+    inset: 0;
+    background: black;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#explosion-fragments {
+    position: absolute;
+    inset: 0;
+}
+
+.explosion-fragment {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    background: #dc2626;
+    opacity: 0.8;
+    animation: explode 1.5s ease-out forwards;
+}
+
+.explosion-message {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    animation: pulse 1.5s infinite;
+}
+
+.error-text {
+    color: #dc2626;
+    font-size: 128px;
+    font-weight: bold;
+    margin-bottom: 32px;
+    animation: glitch 0.3s infinite;
+}
+
+.device-text {
+    color: white;
+    font-size: 80px;
+    font-weight: bold;
+    letter-spacing: 4px;
+}
+
+.destroyed-text {
+    color: #ef4444;
+    font-size: 96px;
+    font-weight: bold;
+    margin-top: 16px;
+    letter-spacing: 4px;
+}
+
+.system-text {
+    color: #6b7280;
+    font-size: 32px;
+    margin-top: 32px;
+    animation: pulse 2s infinite;
+}
+
+/* Animaciones */
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+@keyframes pulse-instruction {
+    0%, 100% { 
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+    }
+    50% { 
+        opacity: 0.7;
+        transform: translateX(-50%) scale(1.05);
+    }
+}
+
+@keyframes glow-pulse {
+    0%, 100% {
+        box-shadow: 0 0 80px rgba(220, 38, 38, 0.6);
+    }
+    50% {
+        box-shadow: 0 0 120px rgba(220, 38, 38, 0.9);
+    }
+}
+
+@keyframes button-alert {
+    0%, 100% { 
+        transform: translateZ(-20px) scale(0.95);
+        background: #dc2626;
+    }
+    50% { 
+        transform: translateZ(-20px) scale(1);
+        background: #ef4444;
+    }
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-30px);
+    }
+}
+
+@keyframes shine-float {
+    0%, 100% {
+        transform: translate(0, 0);
+    }
+    50% {
+        transform: translate(10px, -10px);
+    }
+}
+
+@keyframes explode {
+    to {
+        transform: translate(var(--ex), var(--ey)) rotate(var(--rotation)) scale(0);
+        opacity: 0;
+    }
+}
+
+@keyframes glitch {
+    0%, 100% { transform: translate(0); }
+    25% { transform: translate(-5px, 5px); }
+    50% { transform: translate(5px, -5px); }
+    75% { transform: translate(-5px, -5px); }
+}
+
+.hidden {
+    display: none !important;
+}
